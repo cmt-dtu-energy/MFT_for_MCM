@@ -4,7 +4,7 @@ func_hand = @MFT_wrapper;
 
 x0(5) = x0(5)/1e24;
 
-options = optimset('MaxFunEvals',10000,'MaxIter',10000,'FunValCheck','on');
+options = optimset('MaxFunEvals',10000,'MaxIter',10000,'FunValCheck','on','Display','iter-detailed');
 arr_struct.Tarr = Tarr;
 arr_struct.Barr = Barr;
 arr_struct.params_compare = params_compare;

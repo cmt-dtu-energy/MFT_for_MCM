@@ -104,32 +104,32 @@ DS = S-S0;
 if (options.ShowTheResult)
     %--- Visualize the results
     if (calculate_cp == 1)
-        [figureX,figX] = plot_results(Tarr,Cp);
+        [figureX,figX] = plot_results(Tarr,Cp,Barr);
         xlabel(figX,'Temperature [K]')
         ylabel(figX,'c_p [J kg^{-1} K^{-1}]')
         print('-dpng','Cp.png')
     end
     
     if (calculate_DT == 1)
-        [figureX,figX] = plot_results(Tarr,DT(:,:));
+        [figureX,figX] = plot_results(Tarr,DT(:,:),Barr);
         xlabel(figX,'Temperature [K]')
         ylabel(figX,'\Delta{}T_{ad} [K]')
         print('-dpng','DeltaTad.png')
     end
     
     if (calculate_S == 1)
-        [figureX,figX] = plot_results(Tarr,DS(:,:));
+        [figureX,figX] = plot_results(Tarr,DS(:,:),Barr);
         xlabel(figX,'Temperature [K]')
         ylabel(figX,'\Delta{}s_{iso} [J kg^{-1} K^{-1}]')
         print('-dpng','DeltaS.png')
         
-        [figureX,figX] = plot_results(Tarr,S);
+        [figureX,figX] = plot_results(Tarr,S,Barr);
         xlabel(figX,'Temperature [K]')
         ylabel(figX,'S')
     end
     
     if (calculate_mag == 1)
-        [figureX,figX] = plot_results(Tarr,mag);
+        [figureX,figX] = plot_results(Tarr,mag,Barr);
         xlabel(figX,'Temperature [K]')
         ylabel(figX,'\sigma [emu/g or Am^2 kg^{-1}]')
         print('-dpng','Magnetization.png')
@@ -316,19 +316,25 @@ end
 %% -----------------------------------------------------------------------
 
 %% Visualize the data
-function [figure1,fig1] = plot_results(Xarr,Yarr)
+function [figure1,fig1] = plot_results(Xarr,Yarr,Barr)
     figure1 = figure('PaperSize',[20.98 29.68]);
     fig1 = axes('Parent',figure1,'Layer','top','FontSize',18);
     grid on
     hold all
     
     Marker_arr = {'x' 's' 'd' 'o' '<' '>' 'v' '^'};
-    
+    Color_arr = turbo(length(Yarr(:,1)));
+
     for i = 1:length(Yarr(:,1))
-        plot(Xarr,Yarr(i,:),'Marker',Marker_arr{i},'Markersize',8,'Linestyle','none','color','k');
+        plot(Xarr,Yarr(i,:),'Marker','.','Markersize',8,'Linestyle','none','color',Color_arr(i,:));
     end
     
     xlim([min(Xarr) max(Xarr)]);
+
+    colormap(turbo);
+    hc = colorbar;
+    caxis([min(Barr) max(Barr)]);
+    ylabel(hc,'B [T]');
 end
 
 %% Write table with data to file
